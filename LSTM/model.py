@@ -8,10 +8,11 @@ class LSTMLM(torch.nn.Module):
         super().__init__()
         self.embedding = EmbeddingMatrix(n_token=n_token, dim=h_dim)
         self.lstm = torch.nn.LSTM(h_dim, h_dim, n_layer, batch_first=True, bidirectional=bidirectional)
-        self.fc = torch.nn.Linear(h_dim, n_token)
+        self.fc = torch.nn.Linear(h_dim * 2 if bidirectional else h_dim, n_token)
 
         self.h_dim = h_dim
         self.n_layer = n_layer
+        self.bidirectional = bidirectional
     
     def forward(self, input_ids, hidden):
         x = self.embedding(input_ids)

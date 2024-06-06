@@ -51,8 +51,12 @@ def train(model, device, train_dataloader, val_dataloader, epoch, lr):
 
             optimizer.zero_grad()
 
-            hidden = (torch.zeros(model.n_layer, input_ids.shape[0], model.h_dim, device=device),
-                  torch.zeros(model.n_layer, input_ids.shape[0], model.h_dim, device=device))
+            hidden = (torch.zeros(model.n_layer * 2 if model.bidirectional else model.n_layer, 
+                                  input_ids.shape[0],
+                                  model.h_dim, device=device),
+                  torch.zeros(model.n_layer * 2 if model.bidirectional else model.n_layer, 
+                              input_ids.shape[0], 
+                              model.h_dim, device=device))
 
             out, hidden = model.forward(input_ids=input_ids, hidden=hidden)
 
@@ -75,8 +79,12 @@ def train(model, device, train_dataloader, val_dataloader, epoch, lr):
                 input_ids = batch.pop("input_ids").to(device)
                 attention_mask = batch.pop("attention_mask").to(device)
 
-                hidden = (torch.zeros(model.n_layer, input_ids.shape[0], model.h_dim, device=device),
-                        torch.zeros(model.n_layer, input_ids.shape[0], model.h_dim, device=device))
+                hidden = (torch.zeros(model.n_layer * 2 if model.bidirectional else model.n_layer, 
+                                            input_ids.shape[0],
+                                            model.h_dim, device=device),
+                            torch.zeros(model.n_layer * 2 if model.bidirectional else model.n_layer, 
+                                        input_ids.shape[0], 
+                                        model.h_dim, device=device))
 
                 out, hidden = model.forward(input_ids=input_ids, hidden=hidden)
 
@@ -143,6 +151,7 @@ def main():
     ckpt = {
         "h_dim" : args.d_model,
         "n_layer" : args.n_layer,
+        "bidirectional" : bool(args.bidirectional),
         "state_dict" : model.state_dict()
     }
 
@@ -155,6 +164,7 @@ def main():
     stats = {
         "h_dim" : args.d_model,
         "n_layer" : args.n_layer,
+        "bidirectional" : bool(args.bidirectional),
         "params" : count_parameters(model),
         "history" : history
     }

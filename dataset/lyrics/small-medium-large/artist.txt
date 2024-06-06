@@ -1,0 +1,3 @@
+large : prince - 5868
+medium : patti-smith - 1744
+small : lin-manuel-miranda - 437

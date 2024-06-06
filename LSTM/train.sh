@@ -1,11 +1,11 @@
-python train.py --train_data ../dataset/proc/adele/train.txt \
-                --test_data ../dataset/proc/adele/test.txt \
-                --seq_len 128 \
-                --d_model 256 \
-                --n_layer 2 \
+python train.py --train_data ../dataset/lyrics/proc/adele/train.txt \
+                --test_data ../dataset/lyrics/proc/adele/test.txt \
+                --seq_len 64 \
+                --d_model 128 \
+                --n_layer 1 \
                 --gpu 0 \
                 --batch 8 \
                 --lr 3e-4 \
-                --epoch 2 \
+                --epoch 10 \
+                --bidirectional \
                 --ckpt ./model/model-adele.pth
-                # --bidirectional \
